@@ -30,7 +30,7 @@ import controller.Dispatcher;
  * <p>Title: Application</p>
  * <p>Description: Class managing the runtime application instance</p>
  * <p>Copyright: Copyright (c) 2003 Mohammed Elghaouat, Eric Paquette</p>
- * <p>Company: (ÉTS) - École de Technologie Supérieure</p>
+ * <p>Company: (ï¿½TS) - ï¿½cole de Technologie Supï¿½rieure</p>
  * @author unascribed
  * @version $Revision: 1.22 $
  */
