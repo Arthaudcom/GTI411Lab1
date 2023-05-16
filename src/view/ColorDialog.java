@@ -154,6 +154,31 @@ public class ColorDialog extends JDialog {
 
 	private JPanel createHSVPanel(ColorDialogResult result, int imageWidths) {
 		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		//DUMMY DATA TO REPLACE WITH APPROPRIATE GET FROM result and hsvMediator
+		ColorSlider csHue = new ColorSlider("H:", result.getPixel().getRed(), rgbMediator.getRedImage());
+		ColorSlider csSaturation = new ColorSlider("S:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
+		ColorSlider csValue = new ColorSlider("V:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
+
+		// HOW IT SHOULD LOOK LIKE
+		// ColorSlider csHue = new ColorSlider("H:", result.getPixel().getHue(), hsvMediator.getHueImage());
+		// ColorSlider csSaturation = new ColorSlider("S:", result.getPixel().getSaturation(), hsvMediator.getSaturationImage());
+		// ColorSlider csValue = new ColorSlider("V:", result.getPixel().getValue(), hsvMediator.getValueImage());
+
+		rgbMediator.setRedCS(csHue);
+		rgbMediator.setGreenCS(csSaturation);
+		rgbMediator.setBlueCS(csValue);
+
+		// HOW IT SHOULD LOOK LIKE
+		// hsvMediator.setHueCS(csHue);
+		// hsvMediator.setSaturationCS(csSaturation);
+		// hsvMediator.setValueCS(csValue);
+
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(csHue);
+		panel.add(csSaturation);
+		panel.add(csValue);
 
 		return panel;
 	}
