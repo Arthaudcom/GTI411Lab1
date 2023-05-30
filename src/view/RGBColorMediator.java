@@ -100,7 +100,8 @@ class RGBColorMediator extends Object implements SliderObserver, ObserverIF {
 		if (redCS != null) {
 			redCS.update(redImage);
 		}
-	}
+	} 
+	
 	
 	public void computeGreenImage(int red, int green, int blue) {
 		Pixel p = new Pixel(red, green, blue, 255); 

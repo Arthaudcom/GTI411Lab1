@@ -68,6 +68,19 @@ public class Pixel {
 		setAlpha(alpha);
 	}
 
+/* 	public Pixel(int cyan, int yellow, int magenta, int black) {
+		// Convert CMYK values to RGB
+		int red = (int) (255 * (1 - (cyan / 255.0)) * (1 - (black / 255.0)));
+		int green = (int) (255 * (1 - (magenta / 255.0)) * (1 - (black / 255.0)));
+		int blue = (int) (255 * (1 - (yellow / 255.0)) * (1 - (black / 255.0)));
+	
+		// Set the RGB values and alpha
+		setRed(red);
+		setGreen(green);
+		setBlue(blue);
+		setAlpha(255);
+	} */
+
 	public Pixel(PixelDouble pixel) {
 		setRed((int) pixel.getRed());
 		setGreen((int) pixel.getGreen());
@@ -75,6 +88,7 @@ public class Pixel {
 		setAlpha((int) pixel.getAlpha());
 	}
 
+	
 	/**
 	 * Returns an attribute of the pixel
 	 * 
@@ -91,6 +105,15 @@ public class Pixel {
 	 */
 	public int getAlpha() {
 		return ((valueARGB >> 24) & 0xff);
+	}
+
+	/**
+	 * Returns the black value of the pixel.
+	 * 
+	 * @return the pixel's black value
+	 */
+	public int getBlack() {
+		return (valueARGB & 0xff);
 	}
 
 	/**
@@ -233,6 +256,15 @@ public class Pixel {
 	 */
 	public void setYellow(int valueYellow) {
 		valueARGB = (valueARGB & 0xff00ffff) | ((valueYellow & 0xff) << 16);
+	}
+
+	/**
+	 * Sets the black value of the pixel.
+	 * 
+	 * @param valueBlack the pixel's black value
+	 */
+	public void setBlack(int valueBlack) {
+		valueARGB = (valueARGB & 0xffffff00) | (valueBlack & 0xff);
 	}
 
 	/**
