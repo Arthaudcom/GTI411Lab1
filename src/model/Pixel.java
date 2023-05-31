@@ -16,7 +16,7 @@
 package model;
 
 import java.awt.Color;
-
+import java.lang.Math;
 /**
  * <p>
  * Title: Pixel
@@ -180,6 +180,59 @@ public class Pixel {
 	}
 
 	/**
+	 * Returns the hue component of the pixel
+	 * 
+	 * @return the pixel's hue value
+	 */
+	public int getHue() {
+		int red = (valueARGB >> 16) & 0xFF;
+		int green = (valueARGB >> 8) & 0xFF;
+		int blue = valueARGB & 0xFF;
+		int hue=0;
+		int max = Math.max(red,Math.max(green,blue));
+		int min = Math.min(red,Math.min(green,blue));
+		if(red==max & green==min) hue=Math.round(5+(red-blue)/(red-green));
+		else if(red==max & blue==min) hue=Math.round(1-(red-green)/(red-blue));
+		else if(green==max & blue==min) hue=Math.round(1+(green-red)/(green-blue));
+		else if(green==max & red==min) hue=Math.round(3-(green-blue)/(green-red));
+		else if(blue==max & red==min) hue=Math.round(3+(blue-green)/(blue-red));
+		else if(blue==max & green==min) hue=Math.round(5-(blue-red)/(blue-green));
+		hue=hue*60;
+		if(hue<0) hue+=360;
+		return hue;
+	}
+
+	/**
+	 * Returns the saturation component of the pixel
+	 * 
+	 * @return the pixel's saturation value
+	 */
+	public int getSaturation() {
+		int red = (valueARGB >> 16) & 0xFF;
+		int green = (valueARGB >> 8) & 0xFF;
+		int blue = valueARGB & 0xFF;
+		int v = this.getValue();
+		int saturation = Math.round((v-Math.min(red,Math.min(green,blue)))/v);
+
+		return saturation;
+	}
+
+	/**
+	 * Returns the value component of the pixel
+	 * 
+	 * @return the pixel's value value
+	 */
+	public int getValue() {
+		int red = (valueARGB >> 16) & 0xFF;
+		int green = (valueARGB >> 8) & 0xFF;
+		int blue = valueARGB & 0xFF;
+		
+		int value = Math.max(red,Math.max(green,blue));
+		
+		return value;
+	}
+
+	/**
 	 * Sets an attribute of the pixel
 	 * 
 	 * @param valueARGB the pixel's ARGB value
@@ -265,6 +318,33 @@ public class Pixel {
 	 */
 	public void setBlack(int valueBlack) {
 		valueARGB = (valueARGB & 0xffffff00) | (valueBlack & 0xff);
+	}
+
+	/**
+	 * Sets an attribute of the pixel
+	 * 
+	 * @param valueHue the pixel's hue value
+	 */
+	public void setHue(int valueHue) {
+		valueARGB = (valueARGB & 0xffffff00) | (valueHue & 0xff);
+	}
+
+	/**
+	 * Sets an attribute of the pixel
+	 * 
+	 * @param valueCyan the pixel's CYAN value
+	 */
+	public void setSaturation(int valueSaturation) {
+		valueARGB = (valueARGB & 0xffffff00) | ((valueSaturation & 0xff) << 8);
+	}
+
+	/**
+	 * Sets an attribute of the pixel
+	 * 
+	 * @param valueCyan the pixel's CYAN value
+	 */
+	public void setValue(int valueValue) {
+		valueARGB = (valueARGB & 0xffffff00) | ((valueValue & 0xff) << 16);
 	}
 
 	/**
