@@ -20,9 +20,9 @@ import java.awt.Color;
 /**
  * <p>Title: Pixel</p>
  * <p>Description: Class that handles Pixel data in various formats</p>
- * <p>Copyright: Copyright (c) 2003 Colin Barré-Brisebois, Eric Paquette</p>
- * <p>Company: ETS - École de Technologie Supérieure</p>
- * @author Colin Barré-Brisebois
+ * <p>Copyright: Copyright (c) 2003 Colin Barrï¿½-Brisebois, Eric Paquette</p>
+ * <p>Company: ETS - ï¿½cole de Technologie Supï¿½rieure</p>
+ * @author Colin Barrï¿½-Brisebois
  * @version $Revision: 1.11 $
  */
 public class Pixel {
@@ -181,5 +181,63 @@ public class Pixel {
     		return (((Pixel)o).getARGB() == getARGB());
     	}
     	return false;
+    }
+
+	public int getHue() {
+		int red = getRed();
+		int green = getGreen();
+		int blue = getBlue();
+		int max = Math.max(red, Math.max(green, blue));
+		int min = Math.min(red, Math.min(green, blue));
+		int hue = 0;
+
+		if (red == max && green == min) {
+			hue = 5 + (red - blue)/(red - green);
+		} 
+		else if (red == max && blue == min) {
+			hue = 1 - (red - green)/(red - blue);
+		}
+		else if (green == max && blue == min) {
+			hue = 1 + (green - red)/(green - blue);
+		}
+		else if (green == max && red == min) {
+			hue = 3 - (green - blue)/(green - red);
+		}
+		else if (blue == max && red == min) {
+			hue = 3 + (blue - green)/(blue - red);
+		}
+		else if (blue == max && green == min) {
+			hue = 5 - (blue - red)/(blue - green);
+		}
+
+		hue = hue * 60;
+
+		if (hue < 0) {
+			hue += 360;
+		}
+
+		return hue;
+	}
+
+    public int getSaturation() {
+		int red = getRed();
+		int green = getGreen();
+		int blue = getBlue();
+
+		int value = getValue();
+
+		int saturation = (value-Math.min(red,Math.min(green, blue)))/value;
+
+        return saturation;
+    }
+
+    public int getValue() {
+		int red = getRed();
+		int green = getGreen();
+		int blue = getBlue();
+
+		int value = Math.max(red, Math.max(green, blue));
+
+        return value;
     }
 }
