@@ -183,6 +183,64 @@ public class Pixel {
     	return false;
     }
 
+	public void setHSV(int hue, int saturation, int value) {
+		if (saturation == 0) {
+			setRed(value * 255);
+			setGreen(value * 255);
+			setBlue(value * 255);
+		}
+		else
+		{
+			int h = hue * 6;
+
+			if (h == 6)
+				h = 0;
+			
+			int i = h;
+			int o1 = value * (1 - saturation);
+			int o2 = value * (1 - saturation * (h - i));
+			int o3 = value * (1 - saturation * (1 - (h - i)));
+			int r = 0;
+			int g = 0;
+			int b = 0;
+
+			if (i == 0) {
+				r = value;
+				g = o3;
+				b = o1;
+			}
+			else if (i == 1) {
+				r = o2;
+				g = value;
+				b = o1;
+			}
+			else if (i == 2) {
+				r = o1;
+				g = value;
+				b = o3;
+			}
+			else if (i == 3) {
+				r = o1;
+				g = o2;
+				b = value;
+			}
+			else if (i == 4) {
+				r = o3;
+				g = o1;
+				b = value;
+			}
+			else {
+				r = value;
+				g = o1;
+				b = o2;
+			}
+
+			setRed(r * 255);
+			setGreen(g * 255);
+			setBlue(b * 255);
+		}
+	}
+
 	public int getHue() {
 		int red = getRed();
 		int green = getGreen();
