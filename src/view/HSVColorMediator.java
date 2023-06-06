@@ -110,7 +110,7 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 
     private void computeHueImage(float saturation, float value) {
         for (int i = 0; i < imagesWidth; i++) {
-            int h = (i / imagesWidth)*360;
+            float h = ((float)i / (float)imagesWidth)*360;
             Pixel p = getPixelFromHsvToRgb(h, saturation, value);
             int rgb = p.getARGB();
 
@@ -149,20 +149,20 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
         boolean updateSaturation = false;
         boolean updateValue = false;
 
-        if (cs == hueCS && v != hue) {
-            hue = v;
+        if (cs == hueCS && v != (int)getHue()) {
+            hue = (float) v*360/255;
             updateSaturation = true;
             updateValue = true;
         }
 
-        if (cs == saturationCS && v != saturation) {
-            saturation = v;
+        if (cs == saturationCS && v != (int)getSaturation()) {
+            saturation = (float) v/255;
             updateHue = true;
             updateValue = true;
         }
 
-        if (cs == valueCS && v != value) {
-            value = v;
+        if (cs == valueCS && v != (int)getValue()) {
+            value = (float) v/255;
             updateHue = true;
             updateSaturation = true;
         }
@@ -246,6 +246,7 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
         // hsvTable[2] = value
         hsvTable[2] = max;
 
+        // hsvTable[0] = hue
         if (red == max && green == min) {
 			hsvTable[0] = 5 + (red - blue)/(red - green);
 		} 
@@ -265,11 +266,16 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 			hsvTable[0] = 5 - (blue - red)/(blue - green);
 		}
 
-		hsvTable[0] = hsvTable[0] * 60;
+        hsvTable[0] = hsvTable[0] * 60;
 
-		if (hsvTable[0] < 0) {
-			hsvTable[0] += 360;
-		}
+        if ((max - min)/max == 0) {
+            hsvTable[0] = 0;
+            hsvTable[1] = 0;
+        }
+        
+        if (hsvTable[0] == 360) {
+            hsvTable[0] = 0;
+        }
 
         return hsvTable;
     }
