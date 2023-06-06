@@ -40,7 +40,7 @@ import model.Pixel;
 public class ColorDialog extends JDialog {
 	private JButton okButton;
 	private RGBColorMediator rgbMediator;
-	// private CMYKColorMediator cmykMediator;
+	private CMYKColorMediator cmykMediator;
 	private HSVColorMediator hsvMediator;
 	private ActionListener okActionListener;
 	private ColorDialogResult result;
@@ -66,8 +66,8 @@ public class ColorDialog extends JDialog {
 		JPanel rgbPanel = createRGBPanel(result, imageWidths);
 		tabbedPane.addTab("RGB", rgbPanel);
 
-		// JPanel cmykPanel = createCMYKPanel(result, imageWidths);
-		// tabbedPane.addTab("CMYK", cmykPanel);
+		JPanel cmykPanel = createCMYKPanel(result, imageWidths);
+		tabbedPane.addTab("CMYK", cmykPanel);
 
 		JPanel hsvPanel = createHSVPanel(result, imageWidths);
 		tabbedPane.addTab("HSV", hsvPanel);
@@ -119,35 +119,26 @@ public class ColorDialog extends JDialog {
 	}
 
 	private JPanel createCMYKPanel(ColorDialogResult result, int imageWidths) {
+		cmykMediator = new CMYKColorMediator(result, imageWidths, 30);
+
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-		//DUMMY DATA TO REPLACE WITH APPROPRIATE GET FROM result and cmykMediator
-		ColorSlider csCyan = new ColorSlider("C:", result.getPixel().getRed(), rgbMediator.getRedImage());
-		ColorSlider csMagenta = new ColorSlider("M:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
-		ColorSlider csYellow = new ColorSlider("Y:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
-		
-		// HOW IT SHOULD LOOK LIKE
-		// ColorSlider csCyan = new ColorSlider("C:", result.getPixel().getCyan(), cmykMediator.getCyanImage());
-		// ColorSlider csMagenta = new ColorSlider("M:", result.getPixel().getMagenta(), cmykMediator.getMagentaImage());
-		// ColorSlider csYellow = new ColorSlider("Y:", result.getPixel().getYellow(), cmykMediator.getYellowImage());
-		// ColorSlider csKey = new ColorSlider("K:", result.getPixel().getKey(), cmykMediator.getKeyImage());
+		ColorSlider csCyan = new ColorSlider("C:", (int) cmykMediator.getCyan(), cmykMediator.getCyanImage());
+		ColorSlider csMagenta = new ColorSlider("M:", (int) cmykMediator.getMagenta(), cmykMediator.getMagentaImage());
+		ColorSlider csYellow = new ColorSlider("Y:", (int) cmykMediator.getYellow(), cmykMediator.getYellowImage());
+		ColorSlider csKey = new ColorSlider("K:", (int) cmykMediator.getKey(), cmykMediator.getKeyImage());
 
-		rgbMediator.setRedCS(csCyan);
-		rgbMediator.setGreenCS(csMagenta);
-		rgbMediator.setBlueCS(csYellow);
-
-		// HOW IT SHOULD LOOK LIKE
-		// cmykMediator.setCyanCS(csCyan);
-		// cmykMediator.setMagentaCS(csMagenta);
-		// cmykMediator.setYellowCS(csYellow);
-		// cmykMediator.setKeyCS(csKey);
+		cmykMediator.setCyanCS(csCyan);
+		cmykMediator.setMagentaCS(csMagenta);
+		cmykMediator.setYellowCS(csYellow);
+		cmykMediator.setKeyCS(csKey);
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(csCyan);
 		panel.add(csMagenta);
 		panel.add(csYellow);
-		//panel.add(csKey); To add
+		panel.add(csKey);
 
 		return panel;
 	}
