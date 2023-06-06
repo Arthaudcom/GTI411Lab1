@@ -41,7 +41,7 @@ public class ColorDialog extends JDialog {
 	private JButton okButton;
 	private RGBColorMediator rgbMediator;
 	// private CMYKColorMediator cmykMediator;
-	// private HSVColorMediator hsvMediator;
+	private HSVColorMediator hsvMediator;
 	private ActionListener okActionListener;
 	private ColorDialogResult result;
 
@@ -66,8 +66,8 @@ public class ColorDialog extends JDialog {
 		JPanel rgbPanel = createRGBPanel(result, imageWidths);
 		tabbedPane.addTab("RGB", rgbPanel);
 
-		JPanel cmykPanel = createCMYKPanel(result, imageWidths);
-		tabbedPane.addTab("CMYK", cmykPanel);
+		// JPanel cmykPanel = createCMYKPanel(result, imageWidths);
+		// tabbedPane.addTab("CMYK", cmykPanel);
 
 		JPanel hsvPanel = createHSVPanel(result, imageWidths);
 		tabbedPane.addTab("HSV", hsvPanel);
@@ -153,27 +153,18 @@ public class ColorDialog extends JDialog {
 	}
 
 	private JPanel createHSVPanel(ColorDialogResult result, int imageWidths) {
+		hsvMediator = new HSVColorMediator(result, imageWidths, 30);
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-		//DUMMY DATA TO REPLACE WITH APPROPRIATE GET FROM result and hsvMediator
-		ColorSlider csHue = new ColorSlider("H:", result.getPixel().getRed(), rgbMediator.getRedImage());
-		ColorSlider csSaturation = new ColorSlider("S:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
-		ColorSlider csValue = new ColorSlider("V:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
+		ColorSlider csHue = new ColorSlider("H:", (int) hsvMediator.getHue(), hsvMediator.getHueImage());
+		ColorSlider csSaturation = new ColorSlider("S:", (int) hsvMediator.getSaturation(), hsvMediator.getSaturationImage());
+		ColorSlider csValue = new ColorSlider("V:", (int) hsvMediator.getValue(), hsvMediator.getValueImage());
 
-		// HOW IT SHOULD LOOK LIKE
-		// ColorSlider csHue = new ColorSlider("H:", result.getPixel().getHue(), hsvMediator.getHueImage());
-		// ColorSlider csSaturation = new ColorSlider("S:", result.getPixel().getSaturation(), hsvMediator.getSaturationImage());
-		// ColorSlider csValue = new ColorSlider("V:", result.getPixel().getValue(), hsvMediator.getValueImage());
-
-		rgbMediator.setRedCS(csHue);
-		rgbMediator.setGreenCS(csSaturation);
-		rgbMediator.setBlueCS(csValue);
-
-		// HOW IT SHOULD LOOK LIKE
-		// hsvMediator.setHueCS(csHue);
-		// hsvMediator.setSaturationCS(csSaturation);
-		// hsvMediator.setValueCS(csValue);
+		hsvMediator.setHueCS(csHue);
+		hsvMediator.setSaturationCS(csSaturation);
+		hsvMediator.setValueCS(csValue);
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(csHue);
